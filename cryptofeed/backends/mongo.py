@@ -14,8 +14,8 @@ from cryptofeed.backends.backend import (BackendBookCallback, BackendBookDeltaCa
 
 
 class MongoCallback:
-    def __init__(self, db, uri, key=None, numeric_type=str, **kwargs):
-        self.conn = motor.motor_asyncio.AsyncIOMotorClient(uri, **kwargs)
+    def __init__(self, db, uri, key=None, numeric_type=str, connection_args={}, **kwargs):
+        self.conn = motor.motor_asyncio.AsyncIOMotorClient(uri, **connection_args)
         self.db = self.conn[db]
         self.numeric_type = numeric_type
         self.collection = key if key else self.default_key
