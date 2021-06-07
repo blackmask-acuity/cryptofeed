@@ -75,5 +75,3 @@ class MarketInfoArctic(ArcticCallback, BackendMarketInfoCallback):
 class CandlesArctic(ArcticCallback, BackendCandlesCallback):
     default_key = CANDLES
 
-class BookArctic(ArcticCallback, BackendBookCallback):
-    default_key = L2_BOOK
