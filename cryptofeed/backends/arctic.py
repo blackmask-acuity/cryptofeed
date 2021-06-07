@@ -9,8 +9,8 @@ import pandas as pd
 
 from cryptofeed.backends.backend import (BackendFundingCallback, BackendCandlesCallback, BackendOpenInterestCallback,
                                          BackendTickerCallback, BackendTradeCallback, BackendLiquidationsCallback,
-                                         BackendMarketInfoCallback)
-from cryptofeed.defines import CANDLES, FUNDING, OPEN_INTEREST, TICKER, TRADES, LIQUIDATIONS, MARKET_INFO
+                                         BackendMarketInfoCallback, BackendBookCallback)
+from cryptofeed.defines import CANDLES, FUNDING, OPEN_INTEREST, TICKER, TRADES, LIQUIDATIONS, MARKET_INFO, L2_BOOK
 
 
 class ArcticCallback:
@@ -74,3 +74,6 @@ class MarketInfoArctic(ArcticCallback, BackendMarketInfoCallback):
 
 class CandlesArctic(ArcticCallback, BackendCandlesCallback):
     default_key = CANDLES
+
+class BookArctic(ArcticCallback, BackendBookCallback):
+    default_key = L2_BOOK
