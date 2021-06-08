@@ -259,6 +259,9 @@ class Binance(Feed):
         if skip_update:
             return
 
+        if self.is_closed == False:
+            return
+
         delta = {BID: [], ASK: []}
         ts = msg['E']
 
@@ -274,8 +277,7 @@ class Binance(Feed):
                 else:
                     self.l2_book[pair][side][price] = amount
                     delta[side].append((price, amount))
-        if self.is_closed == False:
-            return
+
         await self.book_callback(self.l2_book[pair], L2_BOOK, pair, forced, delta, timestamp_normalize(self.id, ts), timestamp)
 
     async def _funding(self, msg: dict, timestamp: float):
