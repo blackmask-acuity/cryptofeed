@@ -280,6 +280,7 @@ class Binance(Feed):
 
         await self.book_callback(self.l2_book[pair], L2_BOOK, pair, forced, delta, timestamp_normalize(self.id, ts), timestamp)
 
+        self.is_closed = False
     async def _funding(self, msg: dict, timestamp: float):
         """
         {
@@ -331,7 +332,6 @@ class Binance(Feed):
         if self.candle_closed_only and not msg['k']['x']:
             self.is_closed = False
             return
-        self.is_closed = True
 
         await self.callback(CANDLES,
                             feed=self.id,
@@ -348,6 +348,7 @@ class Binance(Feed):
                             low_price=Decimal(msg['k']['l']),
                             volume=Decimal(msg['k']['v']),
                             closed=msg['k']['x'])
+        self.is_closed = True
 
     async def message_handler(self, msg: str, conn, timestamp: float):
         msg = json.loads(msg, parse_float=Decimal)
