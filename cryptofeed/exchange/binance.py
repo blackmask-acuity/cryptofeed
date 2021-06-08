@@ -51,6 +51,7 @@ class Binance(Feed):
         self.rest_endpoint = 'https://www.binance.com/api/v1'
         self.candle_interval = candle_interval
         self.candle_closed_only = candle_closed_only
+        self.is_closed = False
         if candle_interval not in self.valid_candle_intervals:
             raise ValueError(f"Candle interval must be one of {self.valid_candle_intervals}")
         self.address = self._address()
@@ -273,7 +274,8 @@ class Binance(Feed):
                 else:
                     self.l2_book[pair][side][price] = amount
                     delta[side].append((price, amount))
-
+        if self.is_closed == False:
+            return
         await self.book_callback(self.l2_book[pair], L2_BOOK, pair, forced, delta, timestamp_normalize(self.id, ts), timestamp)
 
     async def _funding(self, msg: dict, timestamp: float):
@@ -325,7 +327,9 @@ class Binance(Feed):
         }
         """
         if self.candle_closed_only and not msg['k']['x']:
+            self.is_closed = False
             return
+        self.is_closed = True
 
         await self.callback(CANDLES,
                             feed=self.id,
