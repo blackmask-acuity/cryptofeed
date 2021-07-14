@@ -29,11 +29,14 @@ class RedisCallback(BackendQueue):
         prefix = 'redis://'
         if socket:
             prefix = 'unix://'
-
-        self.redis = aioredis.from_url(f"{prefix}{host}:{port}")
-        self.key = key if key else self.default_key
-        self.numeric_type = numeric_type
-
+        if 'redis_uri' in kwargs.keys():
+            self.redis = aioredis.from_url(kwargs['redis_uri'])
+            self.key = key if key else self.default_key
+            self.numeric_type = numeric_type
+        else:
+            self.redis = aioredis.from_url(f"{prefix}{host}:{port}")
+            self.key = key if key else self.default_key
+            self.numeric_type = numeric_type
 
 class RedisZSetCallback(RedisCallback):
     def __init__(self, host='127.0.0.1', port=6379, socket=None, key=None, numeric_type=float, score_key='timestamp', **kwargs):
