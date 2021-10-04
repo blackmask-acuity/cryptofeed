@@ -288,7 +288,7 @@ class Binance(Feed, BinanceRestMixin):
         url = f'{self.rest_endpoint}/depth?symbol={pair}&limit={max_depth}'
         resp = await self.http_conn.read(url)
         await sleep(1 / self.request_limit)
-        resp = json.loads(resp)
+        resp = json.loads(resp, parse_float=Decimal)
 
         std_pair = self.exchange_symbol_to_std_symbol(pair)
         self.last_update_id[std_pair] = resp['lastUpdateId']
