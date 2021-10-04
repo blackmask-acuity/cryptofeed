@@ -240,7 +240,7 @@ class BinanceFutures(Binance, BinanceFuturesRestMixin):
         await self.callback(ORDER_INFO, oi, timestamp)
 
     async def message_handler(self, msg: str, conn: AsyncConnection, timestamp: float):
-        msg = json.loads(msg, parse_float=Decimal)
+        msg = json.loads(msg)
 
         # Handle REST endpoint messages first
         if 'openInterest' in msg:

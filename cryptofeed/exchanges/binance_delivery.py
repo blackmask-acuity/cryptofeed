@@ -191,7 +191,7 @@ class BinanceDelivery(Binance, BinanceDeliveryRestMixin):
         await self.callback(ORDER_INFO, oi, timestamp)
 
     async def message_handler(self, msg: str, conn, timestamp: float):
-        msg = json.loads(msg, parse_float=Decimal)
+        msg = json.loads(msg)
 
         # Handle account updates from User Data Stream
         if self.requires_authentication:
